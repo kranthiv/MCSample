@@ -2,14 +2,12 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace MC.Framework
 {
-    public class MassTransitHostedService : IHostedService, IDisposable
+    public class MassTransitHostedService : IHostedService
     {
         private readonly ILogger _logger;
         private readonly IApplicationLifetime _appLifetime;
@@ -28,35 +26,33 @@ namespace MC.Framework
             await _busControl.StartAsync(cancellationToken);
         }
 
-        public Task StopAsync(CancellationToken cancellationToken)
+        public async Task StopAsync(CancellationToken cancellationToken)
         {
-            return _busControl.StopAsync(cancellationToken);
+            await _busControl.StopAsync(cancellationToken);
         }
 
+        /// <summary>
+        /// Perform post-startup activities here
+        /// </summary>
         private void OnStarted()
         {
             _logger.LogInformation("OnStarted has been called.");
-
-            // Perform post-startup activities here
         }
 
+        /// <summary>
+        /// Perform on-stopping activities here
+        /// </summary>
         private void OnStopping()
         {
             _logger.LogInformation("OnStopping has been called.");
-            Dispose();
-            // Perform on-stopping activities here
         }
 
+        /// <summary>
+        /// Perform post-stopped activities here
+        /// </summary>
         private void OnStopped()
         {
             _logger.LogInformation("OnStopped has been called.");
-
-            // Perform post-stopped activities here
-        }
-
-        public void Dispose()
-        {
-            _busControl?.Stop();
         }
     }
 }
