@@ -1,6 +1,7 @@
 ﻿using MassTransit;
 using MC.Application;
 using MC.Framework;
+using MC.Framework.WindowsService;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -24,10 +25,10 @@ namespace MC.ServiceHost
                 {
                     logging.AddConsole();
                 })
-                .UseConsoleLifetime();
+                .UseWindowsService()
+                .Build();
 
-            await host.RunConsoleAsync()
-                .ConfigureAwait(false);
+            await host.RunAsync();
 
         }
 
@@ -36,6 +37,7 @@ namespace MC.ServiceHost
             services.AddMassTransit(cfg =>
             {
                 cfg.AddConsumersFromNamespaceContaining<EmailMessageHandler>();
+
                 cfg.AddBus(sp =>
                 {
                     return Bus.Factory.CreateUsingRabbitMq(configurator =>
@@ -45,8 +47,7 @@ namespace MC.ServiceHost
                                         x.Password("guest");
                                         x.Username("guest");
                                     });
-
-                        configurator.ReceiveEndpoint("Comm", ep =>
+                        configurator.ReceiveEndpoint(host,"SampleQueue", ep =>
                         {
                             ep.Consumer<EmailMessageHandler>(sp);
                         });
