@@ -12,43 +12,24 @@ namespace MC.Producer
     {
         static async Task Main(string[] args)
         {
-            var host = new HostBuilder()
-               .UseContentRoot(AppContext.BaseDirectory)
-               .ConfigureServices((hostContext, services) =>
-               {
-                   services.AddHostedService<MassTransitHostedService>();
-                   ConfigBus(services);
-               })
-               .UseConsoleLifetime()
-               .Build();
-
-            var bus = host.Services.GetRequiredService<IBusControl>();
-            await bus.StartAsync();
-
-            await bus.Publish<IEmailMessage>(new EmailMessage { Message = "sample message"}).ConfigureAwait(false);
-
-            await host.RunAsync()
-                .ConfigureAwait(false);
-
-            await bus.StopAsync();
-        }
-
-        private static void ConfigBus(IServiceCollection services)
-        {
-            services.AddMassTransit(cfg =>
+            
+            var bus = Bus.Factory.CreateUsingRabbitMq(configurator =>
             {
-                cfg.AddBus(sp =>
+                var host = configurator.Host("localhost", "/", x =>
                 {
-                    return Bus.Factory.CreateUsingRabbitMq(configurator =>
-                    {
-                        var host = configurator.Host("localhost", "/", x =>
-                        {
-                            x.Password("guest");
-                            x.Username("guest");
-                        });
-                    });
+                    x.Password("guest");
+                    x.Username("guest");
                 });
             });
+
+            await bus.StartAsync();
+
+            for (int i = 0; i < 10; i++)
+            {
+                await bus.Publish<IEmailMessage>(new EmailMessage { Message = "sample message" }).ConfigureAwait(false);
+            }
+
+            await bus.StopAsync();
         }
     }
 }

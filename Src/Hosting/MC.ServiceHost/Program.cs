@@ -1,7 +1,6 @@
 ﻿using MassTransit;
 using MC.Application;
 using MC.Framework;
-using MC.Framework.WindowsService;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -16,6 +15,7 @@ namespace MC.ServiceHost
         {
             var host = new HostBuilder()
                 .UseContentRoot(AppContext.BaseDirectory)
+                .UseWindowsService()
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddHostedService<MassTransitHostedService>();
@@ -23,9 +23,8 @@ namespace MC.ServiceHost
                 })
                 .ConfigureLogging((hostingContext, logging) =>
                 {
-                    logging.AddConsole();
+                    logging.AddEventLog();
                 })
-                .UseWindowsService()
                 .Build();
 
             await host.RunAsync();
@@ -47,7 +46,7 @@ namespace MC.ServiceHost
                                         x.Password("guest");
                                         x.Username("guest");
                                     });
-                        configurator.ReceiveEndpoint(host,"SampleQueue", ep =>
+                        configurator.ReceiveEndpoint(host, ep =>
                         {
                             ep.Consumer<EmailMessageHandler>(sp);
                         });

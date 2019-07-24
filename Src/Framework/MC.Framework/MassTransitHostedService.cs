@@ -6,52 +6,28 @@ using System.Threading.Tasks;
 
 namespace MC.Framework
 {
-    public class MassTransitHostedService : IHostedService
+    public class MassTransitHostedService : BackgroundService
     {
-        private readonly ILogger _logger;
-        private readonly IApplicationLifetime _appLifetime;
+        private readonly ILogger<MassTransitHostedService> _logger;
         private readonly IBusControl _busControl;
-        public MassTransitHostedService(ILogger<MassTransitHostedService> logger,IApplicationLifetime appLifetime,IBusControl busControl)
+        public MassTransitHostedService(ILogger<MassTransitHostedService> logger,IBusControl busControl)
         {
             _logger = logger;
-            _appLifetime = appLifetime;
             _busControl = busControl;
         }
-        public async Task StartAsync(CancellationToken cancellationToken)
+        public override async Task StopAsync(CancellationToken cancellationToken)
         {
-            _appLifetime.ApplicationStarted.Register(OnStarted);
-            _appLifetime.ApplicationStopping.Register(OnStopping);
-            _appLifetime.ApplicationStopped.Register(OnStopped);
-            await _busControl.StartAsync(cancellationToken);
-        }
-
-        public async Task StopAsync(CancellationToken cancellationToken)
-        {
+            _logger.LogInformation("Masstransit stopping");
             await _busControl.StopAsync(cancellationToken);
+            await base.StopAsync(cancellationToken);
+            _logger.LogInformation("Masstransit stopped");
         }
 
-        /// <summary>
-        /// Perform post-startup activities here
-        /// </summary>
-        private void OnStarted()
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation("OnStarted has been called.");
-        }
-
-        /// <summary>
-        /// Perform on-stopping activities here
-        /// </summary>
-        private void OnStopping()
-        {
-            _logger.LogInformation("OnStopping has been called.");
-        }
-
-        /// <summary>
-        /// Perform post-stopped activities here
-        /// </summary>
-        private void OnStopped()
-        {
-            _logger.LogInformation("OnStopped has been called.");
+            _logger.LogInformation("Masstransit starting");
+            await _busControl.StartAsync(stoppingToken);
+            _logger.LogInformation("Masstransit started");
         }
     }
 }

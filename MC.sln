@@ -7,19 +7,27 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{202B52A8-8AD
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Hosting", "Hosting", "{261AEA1C-99E8-4E62-AE05-6AA4CC87CF7B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MC.ServiceHost", "Src\Hosting\MC.ServiceHost\MC.ServiceHost.csproj", "{FF51B1A9-EC34-4EFC-8C4A-A19CD8AE1789}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MC.ServiceHost", "Src\Hosting\MC.ServiceHost\MC.ServiceHost.csproj", "{FF51B1A9-EC34-4EFC-8C4A-A19CD8AE1789}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{FB1C5EAD-033D-485B-B19D-3D0AFC3D9ABE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MC.Framework", "Src\Framework\MC.Framework\MC.Framework.csproj", "{CB8EBD7E-5FE4-489A-A84C-22F6B351E7EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MC.Framework", "Src\Framework\MC.Framework\MC.Framework.csproj", "{CB8EBD7E-5FE4-489A-A84C-22F6B351E7EC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{5CED59E1-2B1D-4390-81C0-D9BAEB27F389}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MC.Application", "Src\Application\MC.Application\MC.Application.csproj", "{3771D316-620D-4CB8-827A-5877AFD06F35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MC.Application", "Src\Application\MC.Application\MC.Application.csproj", "{3771D316-620D-4CB8-827A-5877AFD06F35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MC.Application.Contracts", "Src\Application\MC.Application.Contracts\MC.Application.Contracts.csproj", "{43F3537D-A68E-46AB-A84E-49ED80A1000D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MC.Application.Contracts", "Src\Application\MC.Application.Contracts\MC.Application.Contracts.csproj", "{43F3537D-A68E-46AB-A84E-49ED80A1000D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MC.Producer", "Src\Hosting\MC.Producer\MC.Producer.csproj", "{E2C1063B-342F-4788-A0CE-869BA30BD358}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MC.Producer", "Src\Hosting\MC.Producer\MC.Producer.csproj", "{E2C1063B-342F-4788-A0CE-869BA30BD358}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{19E68896-E093-4572-9FC1-9884817D1B04}"
+	ProjectSection(SolutionItems) = preProject
+		RabbitMQ-Docker-cluster\definitions.json = RabbitMQ-Docker-cluster\definitions.json
+		RabbitMQ-Docker-cluster\docker-compose.yml = RabbitMQ-Docker-cluster\docker-compose.yml
+		Install.ps1 = Install.ps1
+		RabbitMQ-Docker-cluster\rabbitmq.config = RabbitMQ-Docker-cluster\rabbitmq.config
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
